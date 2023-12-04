@@ -6,7 +6,7 @@ function App() {
   const [img, setImg] = useState("");
 
   // convert image to base64:
-  const imageBase64 = (file) => {
+  const imageBase64 = async (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
@@ -29,12 +29,20 @@ function App() {
   // on Image Upload to Database:
   const onImageUpload = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:8080/upload", {
-      method: "POST",
-      body: JSON.stringify({ img }),
-    });
-    const data = await res.json();
-    console.log(data);
+    if (img) {
+      const res = await fetch("http://localhost:8080/upload", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ img }),
+      });
+      const data = await res.json();
+
+      if (data.status_code === 200) {
+        setImg("");
+      }
+    }
   };
 
   return (

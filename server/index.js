@@ -1,26 +1,23 @@
 const express = require("express");
 const mongodb = require("mongoose");
 const cors = require("cors");
+const { ImageModel } = require("./schema");
 
 const PORT = process.env.PORT || 8080; // server port
 
 const app = express();
 
 app.use(cors()); // frontend connection;
+app.use(express.json({ limit: "10mb" })); // ??????????;
 
 // API endpoint:
-app.get("/upload", (req, res) => {
-  //   res.json({ message: "Server is running" });
-  console.log(req.body);
+app.post("/upload", async (req, res) => {
+  const image = new ImageModel({
+    image: req.body.img,
+  });
+  await image.save();
+  res.json({ message: "Image uploaded successfully!", status_code: 200 });
 });
-
-// Image Schema:
-const schema = new mongodb.Schema({
-  image: String,
-});
-
-// Image Model:
-const ImageModel = mongodb.model("Image", schema);
 
 // mongodb database connection;
 // First we connect to mongodb then run the server:

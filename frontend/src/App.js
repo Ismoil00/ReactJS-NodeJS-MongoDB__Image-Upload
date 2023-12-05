@@ -10,12 +10,7 @@ function App() {
   useEffect(() => {
     const getAllImages = async () => {
       try {
-        const response = await fetch("http://localhost:8080/get-image", {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-          },
-        });
+        const response = await fetch("http://localhost:8080/get-image");
         const data = await response.json();
 
         if (data.status_code === 200) setImages(data.data);
@@ -62,6 +57,8 @@ function App() {
       });
       const data = await res.json();
 
+      console.log("DATA", data);
+
       if (data.status_code === 200) {
         setImg("");
       }
@@ -88,9 +85,11 @@ function App() {
           </div>
         </form>
         <div className="allimage">
-          {allImages.map((el, i) => (
-            <img key={i} src={el.image} width={400} />
-          ))}
+          {allImages.length ? (
+            allImages.map((el, i) => <img key={i} src={el.image} width={400} />)
+          ) : (
+            <p>Database is empty</p>
+          )}
         </div>
       </div>
     </>

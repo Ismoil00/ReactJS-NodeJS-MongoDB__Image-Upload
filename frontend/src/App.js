@@ -1,9 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { MdCloudUpload } from "react-icons/md";
 
 function App() {
   const [img, setImg] = useState("");
+  const [allImages, setImages] = useState([]);
+
+  // get all images:
+  useEffect(() => {
+    const getAllImages = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/get-image", {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+          },
+        });
+        const data = await response.json();
+
+        if (data.status_code === 200) setImages(data.data);
+        else throw new Error("Something went wrong while fetching images");
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getAllImages();
+  }, [img]);
 
   // convert image to base64:
   const imageBase64 = async (file) => {
@@ -64,6 +87,11 @@ function App() {
             <button onClick={(e) => onImageUpload(e)}>Upload</button>
           </div>
         </form>
+        <div className="allimage">
+          {allImages.map((el, i) => (
+            <img key={i} src={el.image} width={400} />
+          ))}
+        </div>
       </div>
     </>
   );

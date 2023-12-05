@@ -68,3 +68,27 @@ form button:active {
   object-position: center;
   border-radius: 5px;
 }
+
+
+.allimage {
+  margin-top: 70px;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 30px;
+  padding: 0 20px;
+}
+
+.allimage img {
+  width: 350px;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: scale 0.2s;
+}
+
+.allimage img:hover {
+  scale: 1.05;
+}
